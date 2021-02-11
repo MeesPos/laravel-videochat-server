@@ -51542,6 +51542,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getPeer: function getPeer(userId, initiator) {
       var _this = this;
 
+      console.log(this.peers);
+      console.log(this.peers[userId] === undefined);
+
       if (this.peers[userId] === undefined) {
         var peer = new simple_peer__WEBPACK_IMPORTED_MODULE_3___default.a({
           initiator: initiator,
@@ -51549,15 +51552,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           trickle: false
         });
         peer.on('signal', function (data) {
+          console.log('signal', "client-signal-".concat(userId));
+
           _this.channel.trigger("client-signal-".concat(userId), {
             userId: _this.userId,
             data: data
           });
         }).on('stream', function (stream) {
+          console.log('stream', stream);
           var videoThere = _this.$refs['remoteVideo'];
           videoThere.srcObject = stream;
         }).on('close', function () {
           var peer = _this.peers[userId];
+          console.log('close', _this.peers[userId]);
 
           if (peer !== undefined) {
             peer.destroy();
@@ -51594,6 +51601,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this2.channel = pusher.subscribe('presence-video-chat');
 
                 _this2.channel.bind("client-signal-".concat(_this2.userId), function (signal) {
+                  console.log(signal);
+
                   var peer = _this2.getPeer(signal.userId, false);
 
                   peer.signal(signal.data);

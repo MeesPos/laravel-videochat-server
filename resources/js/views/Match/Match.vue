@@ -84,7 +84,7 @@ export default {
          this.channel = pusher.subscribe('presence-video-chat');
          this.channel.bind(`client-signal-${this.userId}`, (signal) => 
          {
-            console.log(signal)
+            console.log("De signal 87", signal)
            const peer = this.getPeer(signal.userId, false);
            peer.signal(signal.data);
          });
