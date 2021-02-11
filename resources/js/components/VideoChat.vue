@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="text-center">Laravel Video Chat</h1>
     <div class="video-container" ref="video-container">
-      <video class="video-here" ref="video-here" autoplay muted></video>  
+      <video class="video-here" ref="video-here" autoplay></video>  
       <video class="video-there" ref="video-there" autoplay></video>
       <div class="text-right" v-for="(name,userId) in others" :key="userId">
         <button @click="startVideoChat(userId)" v-text="`Talk with ${name}`"/>
@@ -60,7 +60,6 @@ export default {
     async setupVideoChat() {
       // To show pusher errors
       // Pusher.logToConsole = true;
-      console.log(navigator);
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       const videoHere = this.$refs['video-here'];
       videoHere.srcObject = stream;

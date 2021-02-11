@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
-
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('video_chat', 'VideoChatController@index');
     Route::post('auth/video_chat', 'VideoChatController@auth');
-  });
+});
 
 Auth::routes();
+
+Route::get('/', 'HomeController@index')->name('home');
