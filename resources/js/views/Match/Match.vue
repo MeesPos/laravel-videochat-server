@@ -41,26 +41,31 @@ export default {
          this.getPeer(this.users[0].uid, true);
       },
       getPeer(userId, initiator) {
+         console.log(this.peers)
+         console.log(this.peers[userId] === undefined)
          if(this.peers[userId] === undefined) {
-           let peer = new Peer({
-             initiator,
+            let peer = new Peer({
+               initiator,
              stream: this.stream,
              trickle: false
            });
            peer.on('signal', (data) => {
+              console.log('signal', `client-signal-${userId}`)
              this.channel.trigger(`client-signal-${userId}`, {
-               userId: this.userId,
+                userId: this.userId,
                data: data
              });
            })
            .on('stream', (stream) => {
+              console.log('stream', stream)
              const videoThere = this.$refs['remoteVideo'];
              videoThere.srcObject = stream;
            })
            .on('close', () => {
-             const peer = this.peers[userId];
+              const peer = this.peers[userId];
+              console.log('close', this.peers[userId])
              if(peer !== undefined) {
-               peer.destroy();
+                peer.destroy();
              }
              delete this.peers[userId];
            });
@@ -79,6 +84,7 @@ export default {
          this.channel = pusher.subscribe('presence-video-chat');
          this.channel.bind(`client-signal-${this.userId}`, (signal) => 
          {
+            console.log(signal)
            const peer = this.getPeer(signal.userId, false);
            peer.signal(signal.data);
          });
