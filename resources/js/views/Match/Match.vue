@@ -2,10 +2,10 @@
    <div class="w-full h-full bg-main flex flex-col">
 		<div class="max-w-7xl mx-auto p-4 sm:p:6 lg:p-8 flex flex-col flex-1">
 			<div class="flex-1 flex flex-col relative">
-				<div class="absolute top-0 right-0 m-2 h-40 w-20">
-					<video class="w-full h-full rounded bg-white" autoplay muted ref="localVideo"></video>
-				</div>
-				<video class="bg-gray-200 flex-1 rounded" autoplay playsinline ref="remoteVideo"></video>
+				<!-- <div class="absolute top-0 right-0 m-2 h-40 w-20">
+				</div> -->
+            <video autoplay muted ref="localVideo"></video>
+				<video autoplay playsinline ref="remoteVideo"></video>
 			</div>
 		</div>
       <button 
