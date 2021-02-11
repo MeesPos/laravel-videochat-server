@@ -28,7 +28,7 @@ export default {
    data() {
       return {
          database : firebase.database().ref(),
-         userId : Math.floor(Math.random()*1000000000),
+         userId : firebase.auth().currentUser.uid,
          channel: null,
          stream: null,
          peers: {},
@@ -36,6 +36,37 @@ export default {
       }
    },
    methods: {
+      startVideoChat() {
+         this.getPeer(this.users[0].uid, true);
+      },
+      getPeer(userId, initiator) {
+         if(this.peers[userId] === undefined) {
+           let peer = new Peer({
+             initiator,
+             stream: this.stream,
+             trickle: false
+           });
+           peer.on('signal', (data) => {
+             this.channel.trigger(`client-signal-${userId}`, {
+               userId: this.userId,
+               data: data
+             });
+           })
+           .on('stream', (stream) => {
+             const videoThere = this.$refs['remoteVideo'];
+             videoThere.srcObject = stream;
+           })
+           .on('close', () => {
+             const peer = this.peers[userId];
+             if(peer !== undefined) {
+               peer.destroy();
+             }
+             delete this.peers[userId];
+           });
+           this.peers[userId] = peer;
+         } 
+         return this.peers[userId];
+      },
       async setupVideoChat() {
          // To show pusher errors
          // Pusher.logToConsole = true;
@@ -63,8 +94,9 @@ export default {
          });
       }
    },
-   mounted() {
-      this.setupVideoChat();
+   async mounted() {
+      await this.setupVideoChat();
+      this.startVideoChat();
    },
    created() {
       console.log(firebase.auth().currentUser);

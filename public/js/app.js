@@ -51527,15 +51527,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       database: firebase__WEBPACK_IMPORTED_MODULE_1__["default"].database().ref(),
-      userId: Math.floor(Math.random() * 1000000000),
+      userId: firebase__WEBPACK_IMPORTED_MODULE_1__["default"].auth().currentUser.uid,
       channel: null,
       stream: null,
-      peers: {}
+      peers: {},
+      users: []
     };
   },
   methods: {
-    setupVideoChat: function setupVideoChat() {
+    startVideoChat: function startVideoChat() {
+      this.getPeer(this.users[0].uid, true);
+    },
+    getPeer: function getPeer(userId, initiator) {
       var _this = this;
+
+      if (this.peers[userId] === undefined) {
+        var peer = new simple_peer__WEBPACK_IMPORTED_MODULE_3___default.a({
+          initiator: initiator,
+          stream: this.stream,
+          trickle: false
+        });
+        peer.on('signal', function (data) {
+          _this.channel.trigger("client-signal-".concat(userId), {
+            userId: _this.userId,
+            data: data
+          });
+        }).on('stream', function (stream) {
+          var videoThere = _this.$refs['remoteVideo'];
+          videoThere.srcObject = stream;
+        }).on('close', function () {
+          var peer = _this.peers[userId];
+
+          if (peer !== undefined) {
+            peer.destroy();
+          }
+
+          delete _this.peers[userId];
+        });
+        this.peers[userId] = peer;
+      }
+
+      return this.peers[userId];
+    },
+    setupVideoChat: function setupVideoChat() {
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var stream, videoHere, pusher;
@@ -51551,14 +51586,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 stream = _context.sent;
-                videoHere = _this.$refs['localVideo'];
+                videoHere = _this2.$refs['localVideo'];
                 videoHere.srcObject = stream;
-                _this.stream = stream;
-                pusher = _this.getPusherInstance();
-                _this.channel = pusher.subscribe('presence-video-chat');
+                _this2.stream = stream;
+                pusher = _this2.getPusherInstance();
+                _this2.channel = pusher.subscribe('presence-video-chat');
 
-                _this.channel.bind("client-signal-".concat(_this.userId), function (signal) {
-                  var peer = _this.getPeer(signal.userId, false);
+                _this2.channel.bind("client-signal-".concat(_this2.userId), function (signal) {
+                  var peer = _this2.getPeer(signal.userId, false);
 
                   peer.signal(signal.data);
                 });
@@ -51584,14 +51619,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    this.setupVideoChat();
+    var _this3 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _this3.setupVideoChat();
+
+            case 2:
+              _this3.startVideoChat();
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
   },
   created: function created() {
+    var _this4 = this;
+
     console.log(firebase__WEBPACK_IMPORTED_MODULE_1__["default"].auth().currentUser);
     firebase__WEBPACK_IMPORTED_MODULE_1__["default"].firestore().collection('users').onSnapshot(function (snapshot) {
       // console.log(snapshot.docs);
-      snapshot.docs.forEach(function (doc) {
-        console.log(doc.data());
+      _this4.users = snapshot.docs.map(function (doc) {
+        return doc.data();
+      }).filter(function (x) {
+        return x.uid !== firebase__WEBPACK_IMPORTED_MODULE_1__["default"].auth().currentUser.uid;
       });
     });
   }
