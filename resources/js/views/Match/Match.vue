@@ -31,7 +31,8 @@ export default {
          userId : Math.floor(Math.random()*1000000000),
          channel: null,
          stream: null,
-         peers: {}
+         peers: {},
+         users: []
       }
    },
    methods: {
@@ -69,9 +70,9 @@ export default {
       console.log(firebase.auth().currentUser);
       firebase.firestore().collection('users').onSnapshot(snapshot => {
          // console.log(snapshot.docs);
-         snapshot.docs.forEach(doc => {
-            console.log(doc.data());
-         })
+         this.users = snapshot.docs
+            .map(doc =>doc.data())
+            .filter(x=>x.uid !== firebase.auth().currentUser.uid)
       });
    }
 };
