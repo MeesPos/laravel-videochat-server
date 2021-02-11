@@ -15,7 +15,6 @@ class VideoChatController extends Controller
     }
     
     public function auth(Request $request) {
-        $user = $request->user();
         $socket_id = $request->socket_id;
         $channel_name = $request->channel_name;
         $pusher = new Pusher(
@@ -28,7 +27,7 @@ class VideoChatController extends Controller
             ]
         );
         return response(
-            $pusher->presence_auth($channel_name, $socket_id, $user->id)
+            $pusher->presence_auth($channel_name, $socket_id, $request->userId)
         );
     }
 }

@@ -79,7 +79,10 @@ export default {
         auth: {
           headers: {
             'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content
-          }
+          },
+          params: {
+            'uid': this.userId
+          },
         }
       });
     }

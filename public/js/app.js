@@ -50983,8 +50983,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _AuthContainer_AuthContainer_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuthContainer/AuthContainer.vue */ "./resources/js/views/Auth/AuthContainer/AuthContainer.vue");
-/* harmony import */ var get_age__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! get-age */ "./node_modules/get-age/index.js");
-/* harmony import */ var get_age__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(get_age__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var get_age__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! get-age */ "./node_modules/get-age/index.js");
+/* harmony import */ var get_age__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(get_age__WEBPACK_IMPORTED_MODULE_2__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -51035,7 +51035,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                age = Number(get_age__WEBPACK_IMPORTED_MODULE_3___default()(_this.birthday));
+                age = Number(get_age__WEBPACK_IMPORTED_MODULE_2___default()(_this.birthday));
 
                 if (!(age > 18)) {
                   _context.next = 9;
@@ -51601,7 +51601,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this2.channel = pusher.subscribe('presence-video-chat');
 
                 _this2.channel.bind("client-signal-".concat(_this2.userId), function (signal) {
-                  console.log(signal);
+                  console.log("De signal 87", signal);
 
                   var peer = _this2.getPeer(signal.userId, false);
 
@@ -67736,18 +67736,14 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "flex-1 flex flex-col relative" }, [
-          _c("div", { staticClass: "absolute top-0 right-0 m-2 h-40 w-20" }, [
-            _c("video", {
-              ref: "localVideo",
-              staticClass: "w-full h-full rounded bg-white",
-              attrs: { autoplay: "", muted: "" },
-              domProps: { muted: true }
-            })
-          ]),
+          _c("video", {
+            ref: "localVideo",
+            attrs: { autoplay: "", muted: "" },
+            domProps: { muted: true }
+          }),
           _vm._v(" "),
           _c("video", {
             ref: "remoteVideo",
-            staticClass: "bg-gray-200 flex-1 rounded",
             attrs: { autoplay: "", playsinline: "" }
           })
         ])

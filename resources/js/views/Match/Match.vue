@@ -46,12 +46,12 @@ export default {
          if(this.peers[userId] === undefined) {
             let peer = new Peer({
                initiator,
-             stream: this.stream,
-             trickle: false
-           });
-           peer.on('signal', (data) => {
+               stream: this.stream,
+               trickle: false
+            });
+            peer.on('signal', (data) => {
               console.log('signal', `client-signal-${userId}`)
-             this.channel.trigger(`client-signal-${userId}`, {
+               this.channel.trigger(`client-signal-${userId}`, {
                 userId: this.userId,
                data: data
              });
