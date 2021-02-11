@@ -11,6 +11,7 @@
       <button 
 			type="button" 
 			class="text-white"
+         @click="startVideoChat"
 		> 
 			Call
 		</button>
@@ -100,7 +101,7 @@ export default {
             .map(doc =>doc.data())
             .filter(x=>x.uid !== firebase.auth().currentUser.uid)
          await this.setupVideoChat();
-         this.startVideoChat();
+         // this.startVideoChat();
       });
    }
 };

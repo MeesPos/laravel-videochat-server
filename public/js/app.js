@@ -51518,6 +51518,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -51621,37 +51622,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     var _this3 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return _this3.setupVideoChat();
+    firebase__WEBPACK_IMPORTED_MODULE_1__["default"].firestore().collection('users').onSnapshot( /*#__PURE__*/function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(snapshot) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this3.users = snapshot.docs.map(function (doc) {
+                  return doc.data();
+                }).filter(function (x) {
+                  return x.uid !== firebase__WEBPACK_IMPORTED_MODULE_1__["default"].auth().currentUser.uid;
+                });
+                _context2.next = 3;
+                return _this3.setupVideoChat();
 
-            case 2:
-              _this3.startVideoChat();
-
-            case 3:
-            case "end":
-              return _context2.stop();
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
           }
-        }
-      }, _callee2);
-    }))();
-  },
-  created: function created() {
-    var _this4 = this;
+        }, _callee2);
+      }));
 
-    console.log(firebase__WEBPACK_IMPORTED_MODULE_1__["default"].auth().currentUser);
-    firebase__WEBPACK_IMPORTED_MODULE_1__["default"].firestore().collection('users').onSnapshot(function (snapshot) {
-      // console.log(snapshot.docs);
-      _this4.users = snapshot.docs.map(function (doc) {
-        return doc.data();
-      }).filter(function (x) {
-        return x.uid !== firebase__WEBPACK_IMPORTED_MODULE_1__["default"].auth().currentUser.uid;
-      });
-    });
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
   }
 });
 
@@ -67749,9 +67745,15 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("button", { staticClass: "text-white", attrs: { type: "button" } }, [
-      _vm._v(" \n\t\t\tCall\n\t\t")
-    ])
+    _c(
+      "button",
+      {
+        staticClass: "text-white",
+        attrs: { type: "button" },
+        on: { click: _vm.startVideoChat }
+      },
+      [_vm._v(" \n\t\t\tCall\n\t\t")]
+    )
   ])
 }
 var staticRenderFns = []
