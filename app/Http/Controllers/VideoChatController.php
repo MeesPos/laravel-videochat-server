@@ -6,11 +6,11 @@ use Pusher\Pusher;
 class VideoChatController extends Controller
 {
     public function index(Request $request) {
-        $user = $request->user();
-        $others = \App\User::where('id', '!=', $user->id)->pluck('name', 'id');
+        // $user = $request->user();
+        // $others = \App\User::where('id', '!=', $user->id)->pluck('name', 'id');
         return view('video_chat.index')->with([
-            'user' => collect($request->user()->only(['id', 'name'])),
-            'others' => $others
+            // 'user' => collect($request->user()->only(['id', 'name'])),
+            // 'others' => $others
         ]);
     }
     

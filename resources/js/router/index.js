@@ -12,17 +12,17 @@ Vue.use(VueRouter)
 
 const routes = [
    {
-      path: '/',
+      path: '/vue',
       name: 'Home',
       component: Home
    },
    {
-      path: '/telefoonnummer',
+      path: '/vue/telefoonnummer',
       name: 'Telefoonnummer',
       component: Telefoonnummer
    },
    {
-      path: '/code',
+      path: '/vue/code',
       name: 'Code',
       component: Code,
       beforeEnter: (_, __, next) => {
@@ -36,7 +36,7 @@ const routes = [
       }
    },
    {
-      path: '/age',
+      path: '/vue/age',
       name: 'Age',
       component: Age,
       beforeEnter: (_, __, next) => {
@@ -50,12 +50,12 @@ const routes = [
       }
    },
    {
-      path: '/done',
+      path: '/vue/done',
       name: 'Done',
       component: Done
    },
    {
-      path: '/match',
+      path: '/vue/match',
       name: 'Match',
       component: Match,
       // beforeEnter: (_, __, next) => {

@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('video_chat', 'VideoChatController@index');
-    Route::post('auth/video_chat', 'VideoChatController@auth');
-});
+Route::get('video_chat', 'VideoChatController@index');
+Route::post('auth/video_chat', 'VideoChatController@auth');
 
 Auth::routes();
 

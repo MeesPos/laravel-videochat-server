@@ -9,7 +9,6 @@
 			</div>
 		</div>
       <button 
-			@click="showFriendsFace" 
 			type="button" 
 			class="text-white"
 		> 
@@ -20,77 +19,61 @@
 
 <script>
 import firebase from "firebase";
+import Pusher from 'pusher-js';
+import Peer from 'simple-peer';
 
 export default {
    name: "Match",
+   props: ['pusherKey', 'pusherCluster'],
    data() {
       return {
          database : firebase.database().ref(),
-         yourId : Math.floor(Math.random()*1000000000),
-         servers : {
-            'iceServers': 
-               [
-                  // {
-                  //    'urls': 'stun:stun.services.mozilla.com'
-                  // }, 
-                  {
-                     'urls': 'stun:stun.l.google.com:19302'
-                  },
-                  {
-                     'urls': 'stun:stun.l.google.com:19302'
-                  },
-               ]
-            },
-         pc : new RTCPeerConnection(this.servers)
+         userId : Math.floor(Math.random()*1000000000),
+         channel: null,
+         stream: null,
+         peers: {}
       }
    },
    methods: {
-      async sendMessage(senderId, data) {
-         const msg = await this.database.push({ sender: senderId, message: data });
-         msg.remove();
+      async setupVideoChat() {
+         // To show pusher errors
+         // Pusher.logToConsole = true;
+         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+         const videoHere = this.$refs['localVideo'];
+         videoHere.srcObject = stream;
+         this.stream = stream;
+         const pusher = this.getPusherInstance();
+         this.channel = pusher.subscribe('presence-video-chat');
+         this.channel.bind(`client-signal-${this.userId}`, (signal) => 
+         {
+           const peer = this.getPeer(signal.userId, false);
+           peer.signal(signal.data);
+         });
       },
-
-      readMessage(data) {
-         const msg = JSON.parse(data.val().message);
-         const sender = data.val().sender;
-         if (sender != this.yourId) {
-             if (msg.ice != undefined) {
-                 this.pc.addIceCandidate(new RTCIceCandidate(msg.ice));
+      getPusherInstance() {
+         return new Pusher(this.pusherKey, {
+           authEndpoint: '/auth/video_chat',
+           cluster: this.pusherCluster,
+           auth: {
+             headers: {
+               'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content
              }
-             else if (msg.sdp.type == "offer") {
-                 this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp))
-                   .then(() => this.pc.createAnswer())
-                   .then(answer => this.pc.setLocalDescription(answer))
-                   .then(() => this.sendMessage(this.yourId, JSON.stringify({'sdp': this.pc.localDescription})));
-             }
-             else if (msg.sdp.type == "answer") {
-                 this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-             }
-         }
-      },
-
-      showMyFace() {
-         navigator.mediaDevices.getUserMedia({audio:true, video:true})
-            .then(stream => this.$refs.localVideo.srcObject = stream)
-            .then(stream => this.pc.addStream(stream));
-      },
-
-      showFriendsFace() {
-         this.pc.createOffer()
-            .then(offer => this.pc.setLocalDescription(offer) )
-            .then(() => {
-               this.sendMessage(this.yourId, JSON.stringify({'sdp': this.pc.localDescription}))
-            })
-  }
+           }
+         });
+      }
    },
-   async mounted() {
-      this.pc.onicecandidate = (event => event.candidate ? this.sendMessage(this.yourId, JSON.stringify({'ice': event.candidate})): console.log("Sent All Ice") );
-      this.pc.onaddstream = (event => {
-         this.$refs.remoteVideo.srcObject = event.stream
+   mounted() {
+      this.setupVideoChat();
+   },
+   created() {
+      console.log(firebase.auth().currentUser);
+      firebase.firestore().collection('users').onSnapshot(snapshot => {
+         // console.log(snapshot.docs);
+         snapshot.docs.forEach(doc => {
+            console.log(doc.data());
+         })
       });
-      this.showMyFace();
-      this.database.on('child_added', this.readMessage);
-	},
+   }
 };
 </script>
 
