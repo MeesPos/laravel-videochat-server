@@ -94,17 +94,13 @@ export default {
          });
       }
    },
-   async mounted() {
-      await this.setupVideoChat();
-      this.startVideoChat();
-   },
-   created() {
-      console.log(firebase.auth().currentUser);
-      firebase.firestore().collection('users').onSnapshot(snapshot => {
-         // console.log(snapshot.docs);
+   mounted() {
+      firebase.firestore().collection('users').onSnapshot(async snapshot => {
          this.users = snapshot.docs
             .map(doc =>doc.data())
             .filter(x=>x.uid !== firebase.auth().currentUser.uid)
+         await this.setupVideoChat();
+         this.startVideoChat();
       });
    }
 };
