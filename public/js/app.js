@@ -8544,7 +8544,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.video-container {\n  width: 500px;\n  height: 380px;\n  margin: 8px auto;\n  border: 3px solid #000;\n  position: relative;\n  box-shadow: 1px 1px 1px #9e9e9e;\n}\n.video-here {\n  width: 130px;\n  position: absolute;\n  left: 10px;\n  bottom: 16px;\n  border: 1px solid #000;\n  border-radius: 2px;\n  z-index: 2;\n}\n.video-there {\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n}\n.text-right {\n  text-align: right;\n}\n", ""]);
+exports.push([module.i, ".video-container {\n  width: 500px;\n  height: 380px;\n  margin: 8px auto;\n  border: 3px solid #000;\n  position: relative;\n  box-shadow: 1px 1px 1px #9e9e9e;\n}\n.video-here {\n  width: 130px;\n  position: absolute;\n  left: 10px;\n  bottom: 16px;\n  border: 1px solid #000;\n  border-radius: 2px;\n  z-index: 2;\n}\n.video-there {\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n}\n.text-right {\n  text-align: right;\n}\n", ""]);
 
 // exports
 
@@ -64208,6 +64208,17 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/css/app.css":
+/*!*******************************!*\
+  !*** ./resources/css/app.css ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -64448,26 +64459,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!***********************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/css/app.css ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /Users/smit46/Documents/Smit werk/laravel-videochat-server/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/smit46/Documents/Smit werk/laravel-videochat-server/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /Users/smit46/Documents/Smit werk/laravel-videochat-server/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ }),
