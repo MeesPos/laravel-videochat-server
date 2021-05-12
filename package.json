@@ -30,7 +30,7 @@
         "autoprefixer": "^9.8.6",
         "firebase": "^8.2.6",
         "get-age": "^1.0.1",
-        "postcss": "^7.0.35",
+        "postcss": "^8.2.10",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3",
         "vue-router": "^3.5.1",
         "vuex": "^3.6.2"
